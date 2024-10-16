@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "model-city-connect-three",
+  "private_key_id": "a99d4dd8b4f2b023313c5e71c4f46400fb486f4c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDwtHKLge0ULY07\nUpCV1oENqXdkJj5PwdFTCiO0e5gWfZElq7poN2YrNpUVx1BE3pve4nRJsRNbGGaX\nR3W+hGHwG3D2s/B/VzbH3HRrmIOOhoUeM6cIywC2crHJ10NqB3sAw80oSVrucyzJ\nsQdLbJwl/aREA+60c6m1As9yeIieezlZQatjXUHOXTHB+gGsPEkA8zHvMy/4VOf9\nJVqLv4e6xnK436mleIIlb2Wo+4ApzPMLEbeJOXB6fIp4zagssJGBPvOAGZMjrLtx\nAUtUKc7kW+dqw++de8syJdRSBTOMD3AULFJbMV03BxKEyhkhqZdyeSbKl5BnBG18\ny9UXyEsfAgMBAAECggEAOWO0mcmJBpITxcyaN3d0vpakpiauHaMG7wcQW0RKjzYy\nCKrIn3dx7ySs6Avk+f6faEVS140WIdaQA0qg6qMynKZWSSO+2AWpxH4t7cdnunAd\nRgWnsiOAkH+JHygpZRrSe2yzugK/YPHqAE6qgBOtqSsv4p2TaMfY8xTv9AmD/VDK\ng7exrHBKtpW7tU1Iq09MG4/7UxJ6t1Lbh3GUVAnRUKu+kyVNCI4h/NMRHyGmmfC4\nAk+nKsjaKcW47SHEuimSRbl59SXMyEMABuk5aGxhk2DGtxIVkVxdpBLVVkugh+b/\nh9hH4hNpafgfjYZYNIbL9u34+bh37er0BURQqmqgSQKBgQD+eSf6FEn+dYJi9u+m\nrYmYw/YAIT5+AQl5VLC6wH/cnKJ1ppH4z092ydMndzlqRkNTui/MZ48YQleCLBPP\n1YX5Fe0MjzV32VoFYy5pV1OnjAXh218ZEZBCZhMIy/wi+tPmea3a0aGOHutFmVJA\nh47d/3XL8dg7VdjA2+il1hSICQKBgQDyJiT9pUC9ubkPq840OM1zwsyziUNdKQA8\nCU4A/sOfk2VpdUtize7fx0xK3za3NQxfGbVfRmWXmt17hu7p2O1D0XuzmfCRQBZE\njPz5kbmObPcaPyztXIgtP06YnjW2aJfHD3u6J6hPhJuIrAhzeiHLRVIUOxDHwNYO\nJ9txy1nz5wKBgCBjISBl9qjpIcggr42iJpIH1sZbdM2qqh8EFV4fY+abFN4ubgOh\ntvZiZ3ptZSROfwEoAC9eusqWnvaVT4wzG9MA5GOl0mNHiXqIDf8gOyhm3NTLC8Zw\nAtFAlomXFKcLD28U63ifF5Wz/7Oi+OH3nspIWiCzzhZ3LZgWJPz+SyypAoGBAJ4y\nzXfovqM08vKKC+2SLqeyXInu41O5ta2DZrK/vo5Cfb6oItgqMiWAzxcbPWP0BGEd\nKqFUHIsvYgOR5ARi9J+Z/HcZ21EJzYJ7mcpyqgeiqM08+N0Z1t24vmB2/CBvtLkY\nJH0563wH5pUjz2GiKPHkF/ufmxblpPMalwOBFwOBAoGASGosDhi3p1/n2X/hByhU\nrcHTIgP3x3JCe5Xgqw/ZzYruHmMfdRIddhDtb99yszMiIf/tcyRtEzAuD9VQXPZQ\nHYX2s1sHLRUZRrEG+QsFkfNH7muqBoh2GT/G6Nz5uAfYGu0lkQ0SLsfVU/N4ZGMw\n+F8tWLXX2RUjPCi3PR9RELI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "shannontan@model-city-connect-three.iam.gserviceaccount.com",
+  "client_id": "102189513650181341758",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/shannontan%40model-city-connect-three.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

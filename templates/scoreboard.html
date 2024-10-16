@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Three Scorer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #scoreboard {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        #cameraContainer {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        #cameraFeed, #capturedImage {
+            width: 100%;
+            height: auto;
+        }
+        #captureButton, #retakeButton {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #retakeButton {
+            background-color: #f44336;
+        }
+        #moodForm {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        #moodForm fieldset {
+            border: none;
+            padding: 0;
+        }
+        #moodForm textarea {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Connect Three Scorer</h1>
+    <div id="cameraContainer">
+        <video id="cameraFeed" autoplay playsinline></video>
+        <img id="capturedImage" style="display: none;">
+        <button id="captureButton">📷 Take Picture</button>
+        <button id="retakeButton" style="display: none;">Retake Picture</button>
+    </div>
+    <form id="scoreForm">
+        <fieldset>
+            <legend>Who won?</legend>
+            <label>
+                <input type="radio" name="winner" value="east" required> East
+            </label>
+            <label>
+                <input type="radio" name="winner" value="west" required> West
+            </label>
+        </fieldset>
+        
+        <button type="submit">Submit Score</button>
+    </form>
+
+    <div id="scoreboard">
+        <div>East: <span id="eastScore">0</span></div>
+        <div>West: <span id="westScore">0</span></div>
+    </div>
+
+    <!-- Optional Mood Feedback Form -->
+    <form id="moodForm">
+        <fieldset>
+            <legend>How are you feeling?</legend>
+
+            <label for="mood">Select your mood:</label>
+            <select id="mood" name="mood" required>
+                <option value="">--Choose your mood--</option>
+                <option value="happy">Happy</option>
+                <option value="stressed">Stressed</option>
+                <option value="upset">Upset</option>
+                <option value="tired">Tired</option>
+                <option value="relaxed">Relaxed</option>
+            </select>
+            <legend> </legend>
+            <label for="stress">On a scale of 1-10, how stressed are you?</label>
+            <input type="number" id="stress" name="stress" min="1" max="10" required>
+            <legend> </legend>
+            <label for="feedback">Any feedback for us?</label>
+            <textarea id="feedback" name="feedback" placeholder="Your thoughts..."></textarea>
+
+            <button type="submit">Submit Feedback</button>
+        </fieldset>
+    </form>
+
+    <script>
+        const cameraFeed = document.getElementById('cameraFeed');
+        const capturedImage = document.getElementById('capturedImage');
+        const captureButton = document.getElementById('captureButton');
+        const retakeButton = document.getElementById('retakeButton');
+        const form = document.getElementById('scoreForm');
+        const eastScoreElement = document.getElementById('eastScore');
+        const westScoreElement = document.getElementById('westScore');
+        let stream;
+
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                cameraFeed.srcObject = stream;
+            } catch (err) {
+                console.error("Error accessing camera:", err);
+                alert("Error accessing camera. Please make sure you've granted camera permissions.");
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        captureButton.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = cameraFeed.videoWidth;
+            canvas.height = cameraFeed.videoHeight;
+            canvas.getContext('2d').drawImage(cameraFeed, 0, 0);
+            capturedImage.src = canvas.toDataURL('image/jpeg');
+            cameraFeed.style.display = 'none';
+            capturedImage.style.display = 'block';
+            captureButton.style.display = 'none';
+            retakeButton.style.display = 'block';
+            stopCamera();
+        });
+
+        retakeButton.addEventListener('click', () => {
+            cameraFeed.style.display = 'block';
+            capturedImage.style.display = 'none';
+            captureButton.style.display = 'block';
+            retakeButton.style.display = 'none';
+            startCamera();
+        });
+
+        async function fetchScores() {
+            try {
+                const response = await fetch('/api/scores');
+                const scores = await response.json();
+                eastScoreElement.textContent = scores.east;
+                westScoreElement.textContent = scores.west;
+            } catch (error) {
+                console.error('Error fetching scores:', error);
+            }
+        }
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            if (capturedImage.style.display === 'none') {
+                alert("Please take a picture of the Connect Three board first.");
+                return;
+            }
+
+            const winner = document.querySelector('input[name="winner"]:checked').value;
+            
+            try {
+                const response = await fetch('/api/submit-score', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        winner: winner,
+                        image: capturedImage.src
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                await fetchScores();
+            } catch (error) {
+                console.error('Error submitting score:', error);
+                alert('Error submitting score. Please try again.');
+            }
+            
+            // Reset the form and camera
+            form.reset();
+            cameraFeed.style.display = 'block';
+            capturedImage.style.display = 'none';
+            captureButton.style.display = 'block';
+            retakeButton.style.display = 'none';
+            startCamera();
+        });
+
+        // Start the camera and fetch initial scores when the page loads
+        startCamera();
+        fetchScores();
+
+        // Handle feedback form submission
+        const moodForm = document.getElementById('moodForm');
+        moodForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const mood = document.getElementById('mood').value;
+            const stress = document.getElementById('stress').value;
+            const feedback = document.getElementById('feedback').value;
+
+            try {
+                const response = await fetch('/api/submit-feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        mood: mood,
+                        stress: stress,
+                        feedback: feedback
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                alert('Thank you for your feedback!');
+                moodForm.reset();
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+                alert('Error submitting feedback. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

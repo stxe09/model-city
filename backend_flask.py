@@ -7,8 +7,17 @@ from google.cloud import storage
 import os
 import base64
 import time
+import os
+from google.cloud import storage
 
+# Set the environment variable to the path of your service account key file
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'model-city-connect-three-6dbae69fa234.json'  # Change to your path
+
+# Initialize Google Cloud Storage client
 storage_client = storage.Client()
+bucket_name = 'image_submissions_model_city'  # Replace with your actual bucket name
+bucket = storage_client.bucket(bucket_name)
+
 
 app = Flask(__name__)
 
@@ -21,10 +30,7 @@ class Score(db.Model):
     winner = db.Column(db.String(10), nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
 
-# Google Cloud Storage setup
-storage_client = storage.Client()
-bucket_name = 'your-bucket-name'  # Replace with your actual bucket name
-bucket = storage_client.bucket(bucket_name)
+
 
 @app.route('/')
 def index():

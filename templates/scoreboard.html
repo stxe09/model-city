@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connect Three Scorer</title>
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,6 +61,15 @@
             width: 100%;
             height: 100px;
         }
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -89,6 +99,7 @@
         <div>West: <span id="westScore">0</span></div>
     </div>
 
+    <div class="fireworks"></div>
     <!-- Optional Mood Feedback Form -->
     <form id="moodForm">
         <fieldset>
@@ -122,7 +133,19 @@
         const form = document.getElementById('scoreForm');
         const eastScoreElement = document.getElementById('eastScore');
         const westScoreElement = document.getElementById('westScore');
+        const fireworksContainer = document.querySelector('.fireworks');
         let stream;
+
+        const fireworks = new Fireworks.default(fireworksContainer, {
+            speed: 4,
+            acceleration: 1.05,
+            friction: 0.97,
+            gravity: 1,
+            particles: 100,
+            trace: 3,
+            explosion: 5,
+            boundaries: { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight }
+        });
 
         async function startCamera() {
             try {
@@ -199,6 +222,13 @@
                 }
 
                 await fetchScores();
+
+                fireworksContainer.style.display = 'block';  // Show the fireworks container
+                fireworks.start();
+                setTimeout(() => {
+                    fireworks.stop();
+                    fireworksContainer.style.display = 'none';  // Hide after 5 seconds
+                }, 5000);
             } catch (error) {
                 console.error('Error submitting score:', error);
                 alert('Error submitting score. Please try again.');

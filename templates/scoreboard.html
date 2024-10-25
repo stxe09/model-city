@@ -409,9 +409,6 @@
         const moodForm = document.getElementById('moodForm');
         moodForm.addEventListener('submit', async function(event) {
             event.preventDefault();
-
-            const mood = document.getElementById('mood').value;
-            const stress = document.getElementById('stress').value;
             const feedback = document.getElementById('feedback').value;
 
             try {
@@ -421,8 +418,6 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        mood: mood,
-                        stress: stress,
                         feedback: feedback
                     }),
                 });

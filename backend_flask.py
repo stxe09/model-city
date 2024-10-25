@@ -60,21 +60,17 @@ def submit_score():
 
     return jsonify({'message': 'Score submitted successfully'}), 200
 
-class MoodResponse(db.Model):
+class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    mood = db.Column(db.String(20), nullable=False)
-    stress = db.Column(db.Integer, nullable=False)
     feedback = db.Column(db.Text, nullable=True)
 
 @app.route('/api/submit-feedback', methods=['POST'])
 def submit_feedback():
     data = request.json
-    mood = data['mood']
-    stress = data['stress']
     feedback = data.get('feedback', '')  # Optional feedback
 
     # Save feedback to database
-    new_response = MoodResponse(mood=mood, stress=stress, feedback=feedback)
+    new_response = Feedback(feedback=feedback)
     db.session.add(new_response)
     db.session.commit()
 
@@ -82,8 +78,8 @@ def submit_feedback():
 
 @app.route('/api/feedback', methods=['GET'])
 def view_feedback():
-    feedbacks = MoodResponse.query.all()
-    return jsonify([{'id': f.id, 'mood': f.mood, 'stress': f.stress, 'feedback': f.feedback} for f in feedbacks])
+    feedbacks = Feedback.query.all()
+    return jsonify([{'id': f.id, 'feedback': f.feedback} for f in feedbacks])
 
 if __name__ == '__main__':
     with app.app_context():

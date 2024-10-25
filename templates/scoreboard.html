@@ -5,62 +5,224 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connect Three Scorer</title>
     <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --background: #f7f9fc;
+            --text: #2C3E50;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Fredoka', sans-serif;
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            background-color: var(--background);
+            color: var(--text);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 107, 107, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 60%, rgba(78, 205, 196, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 230, 109, 0.05) 0%, transparent 30%);
         }
+        
+        .instructions {
+            text-align: center;
+            color: var(--text);
+            margin-bottom: 2em;
+            font-size: 1.1em;
+            line-height: 1.5;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 1.5em;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
         form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
+
+        form:hover {
+            transform: translateY(-5px);
+        }
+
         #scoreboard {
             display: flex;
             justify-content: space-around;
-            margin-top: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
+        .score-container {
+            text-align: center;
+            padding: 15px 30px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .score-container:hover {
+            transform: scale(1.05);
+        }
+
+        .score-label {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
         #cameraContainer {
             position: relative;
             width: 100%;
             max-width: 400px;
-            margin: 0 auto;
+            margin: 0 auto 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
         #cameraFeed, #capturedImage {
             width: 100%;
             height: auto;
+            border-radius: 20px;
+            margin-bottom: 15px;
         }
-        #captureButton, #retakeButton {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
+
+        .camera-buttons {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        button {
+            padding: 12px 25px;
             border: none;
+            border-radius: 25px;
             cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 5px;
         }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.2);
+        }
+
+        #captureButton {
+            background: var(--secondary);
+        }
+
         #retakeButton {
-            background-color: #f44336;
+            background: var(--primary);
         }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        .radio-label {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="radio"]:checked + .radio-label {
+            background: var(--secondary);
+            color: white;
+            transform: scale(1.05);
+        }
+
         #moodForm {
             margin-top: 40px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            border-radius: 8px;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        #moodForm fieldset {
-            border: none;
-            padding: 0;
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: 'Fredoka', sans-serif;
+            margin: 10px 0;
+            transition: border-color 0.3s ease;
         }
-        #moodForm textarea {
+
+        select:focus, input[type="number"]:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+
+        textarea {
             width: 100%;
             height: 100px;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: 'Fredoka', sans-serif;
+            margin: 10px 0;
+            resize: vertical;
+            transition: border-color 0.3s ease;
         }
+
+        textarea:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+
+        legend {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
         .fireworks {
             position: fixed;
             top: 0;
@@ -68,60 +230,56 @@
             width: 100%;
             height: 100%;
             z-index: 9999;
-            display: none;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <h1>Connect Three Scorer</h1>
+    <h1>✨ Connect Three Scorer ✨</h1>
+    <div class="instructions">
+        📸 Take a picture of your game board, select the winner, and share your mood!
+        <br>Your scores will be updated automatically.
+    </div>
     <div id="cameraContainer">
         <video id="cameraFeed" autoplay playsinline></video>
         <img id="capturedImage" style="display: none;">
-        <button id="captureButton">📷 Take Picture</button>
-        <button id="retakeButton" style="display: none;">Retake Picture</button>
+        <button id="captureButton">📸 Take Picture</button>
+        <button id="retakeButton" style="display: none;">🔄 Retake Picture</button>
     </div>
     <form id="scoreForm">
-        <fieldset>
-            <legend>Who won?</legend>
-            <label>
-                <input type="radio" name="winner" value="east" required> East
-            </label>
-            <label>
-                <input type="radio" name="winner" value="west" required> West
-            </label>
+        <fieldset style="border: none;">
+            <legend>Who won? 🏆</legend>
+            <div style="text-align: center;">
+                <input type="radio" id="east" name="winner" value="east" required>
+                <label for="east" class="radio-label">East 🌅</label>
+                
+                <input type="radio" id="west" name="winner" value="west" required>
+                <label for="west" class="radio-label">West 🌄</label>
+            </div>
         </fieldset>
         
-        <button type="submit">Submit Score</button>
+        <button type="submit">🎉 Submit Score 🎉</button>
     </form>
 
     <div id="scoreboard">
-        <div>East: <span id="eastScore">0</span></div>
-        <div>West: <span id="westScore">0</span></div>
+        <div class="score-container">
+            <div class="score-label">East 🌅</div>
+            <div class="score-value" id="eastScore">0</div>
+        </div>
+        <div class="score-container">
+            <div class="score-label">West 🌄</div>
+            <div class="score-value" id="westScore">0</div>
+        </div>
     </div>
 
     <div class="fireworks"></div>
-    <!-- Optional Mood Feedback Form -->
+
     <form id="moodForm">
-        <fieldset>
-            <legend>How are you feeling?</legend>
-
-            <label for="mood">Select your mood:</label>
-            <select id="mood" name="mood" required>
-                <option value="">--Choose your mood--</option>
-                <option value="happy">Happy</option>
-                <option value="stressed">Stressed</option>
-                <option value="upset">Upset</option>
-                <option value="tired">Tired</option>
-                <option value="relaxed">Relaxed</option>
-            </select>
-            <legend> </legend>
-            <label for="stress">On a scale of 1-10, how stressed are you?</label>
-            <input type="number" id="stress" name="stress" min="1" max="10" required>
-            <legend> </legend>
-            <label for="feedback">Any feedback for us?</label>
-            <textarea id="feedback" name="feedback" placeholder="Your thoughts..."></textarea>
-
-            <button type="submit">Submit Feedback</button>
+        <fieldset style="border: none;">
+            <legend>Help us improve! 😊</legend>
+            <label for="feedback">Any feedback for us? 💭</label>
+            <textarea id="feedback" name="feedback" placeholder="Share your thoughts..."></textarea>
+            <button type="submit">📤 Submit Feedback</button>
         </fieldset>
     </form>
 

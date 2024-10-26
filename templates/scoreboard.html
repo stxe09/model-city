@@ -232,6 +232,19 @@
             z-index: 9999;
             pointer-events: none;
         }
+
+        .stress-level-container {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .stress-level {
+            flex: 1;
+            margin-right: 100px; 
+        }
+
     </style>
 </head>
 <body>
@@ -277,6 +290,18 @@
     <form id="moodForm">
         <fieldset style="border: none;">
             <legend>Help us improve! 😊</legend>
+
+            <div class="stress-level-container">
+                <div class="stress-level">
+                    <label for="stress_before">😟Stress Level Before</label>
+                    <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
+                </div>
+                <div class="stress-level">
+                    <label for="stress_after">🥳Stress Level After</label>
+                    <input type="number" id="stress_after" name="stress_after" min="1" max="10" required>
+                </div>
+            </div>
+
             <label for="feedback">Any feedback for us? 💭</label>
             <textarea id="feedback" name="feedback" placeholder="Share your thoughts..."></textarea>
             <button type="submit">📤 Submit Feedback</button>
@@ -409,6 +434,8 @@
         const moodForm = document.getElementById('moodForm');
         moodForm.addEventListener('submit', async function(event) {
             event.preventDefault();
+            const stress_before = document.getElementById('stress_before').value;
+            const stress_after = document.getElementById('stress_after').value;
             const feedback = document.getElementById('feedback').value;
 
             try {
@@ -418,6 +445,8 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        stress_before: stress_before,
+                        stress_after: stress_after,
                         feedback: feedback
                     }),
                 });

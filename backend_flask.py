@@ -63,14 +63,18 @@ def submit_score():
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     feedback = db.Column(db.Text, nullable=True)
+    stress_before = db.Column(db.Integer, nullable=False)
+    stress_after = db.Column(db.Integer, nullable=False)
 
 @app.route('/api/submit-feedback', methods=['POST'])
 def submit_feedback():
     data = request.json
+    stress_before = data['stress_before']
+    stress_after = data['stress_after']
     feedback = data.get('feedback', '')  # Optional feedback
 
     # Save feedback to database
-    new_response = Feedback(feedback=feedback)
+    new_response = Feedback(stress_before=stress_before, stress_after=stress_after,feedback=feedback)
     db.session.add(new_response)
     db.session.commit()
 
@@ -79,7 +83,12 @@ def submit_feedback():
 @app.route('/api/feedback', methods=['GET'])
 def view_feedback():
     feedbacks = Feedback.query.all()
-    return jsonify([{'id': f.id, 'feedback': f.feedback} for f in feedbacks])
+    return jsonify([{
+        'id': f.id, 
+        'feedback': f.feedback,
+        'stress_before': f.stress_before,
+        'stress_after': f.stress_after
+    } for f in feedbacks])
 
 if __name__ == '__main__':
     with app.app_context():

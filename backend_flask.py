@@ -79,7 +79,7 @@ class Feedback(db.Model):
     region = db.Column(db.Integer, nullable=False)
     sticker = db.Column(db.Integer, nullable=False)
     space = db.Column(db.Integer, nullable=False)
-    more = db.Column(db.String(20), nullable=False)
+    more = db.Column(db.Text, nullable=False)
     feedback = db.Column(db.Text, nullable=True)
     
 @app.route('/api/submit-feedback', methods=['POST'])

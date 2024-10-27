@@ -454,6 +454,7 @@
 
         async function startCamera() {
             try {
+                initializeScoreUpdates();
                 stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                 cameraFeed.srcObject = stream;
             } catch (err) {
@@ -465,6 +466,9 @@
         function stopCamera() {
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
+            }
+            if (scoreEventSource) {
+                scoreEventSource.close();
             }
         }
 
@@ -489,15 +493,78 @@
             startCamera();
         });
 
-        async function fetchScores() {
-            try {
-                const response = await fetch('/api/scores');
-                const scores = await response.json();
-                eastScoreElement.textContent = scores.east;
-                westScoreElement.textContent = scores.west;
-            } catch (error) {
-                console.error('Error fetching scores:', error);
+        let scoreEventSource = null;
+        let reconnectAttempts = 0;
+        const MAX_RECONNECT_ATTEMPTS = 5;
+        const RECONNECT_DELAY = 3000; // 3 seconds
+
+        function initializeScoreUpdates() {
+            if (scoreEventSource) {
+                scoreEventSource.close();
             }
+            try {
+                
+                scoreEventSource = new EventSource('/api/score-updates');
+                console.log('Establishing SSE connection...');
+
+                scoreEventSource.onmessage = function(event) {
+                    try {
+                        const scores = JSON.parse(event.data);
+                        eastScoreElement.textContent = scores.east;
+                        westScoreElement.textContent = scores.west;
+                        reconnectAttempts = 0; // Reset reconnect attempts on successful message
+                        console.log('Scores updated:', scores);
+                    } catch (error) {
+                        console.error('Error parsing score data:', error);
+                    }
+                };
+                
+                // Handle connection opening
+                scoreEventSource.onopen = function(event) {
+                    console.log('SSE connection established');
+                    reconnectAttempts = 0;
+                };
+                // Handle errors
+                scoreEventSource.onerror = function(event) {
+                    console.error('EventSource failed:', event);
+                    scoreEventSource.close();
+                    scoreEventSource = null;
+                    
+                    // Attempt to reconnect if we haven't exceeded max attempts
+                    if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+                        reconnectAttempts++;
+                        console.log(`Reconnection attempt ${reconnectAttempts} of ${MAX_RECONNECT_ATTEMPTS} in ${RECONNECT_DELAY}ms`);
+                        setTimeout(initializeScoreUpdates, RECONNECT_DELAY);
+                    } else {
+                        console.error('Max reconnection attempts reached. Falling back to polling.');
+                        // Fall back to regular polling if SSE fails
+                        startPolling();
+                    }
+                };
+            } catch (error) {
+                console.error('Error initializing EventSource:', error);
+                startPolling(); // Fall back to polling if EventSource fails
+            }
+        }
+
+        // Fallback polling function
+        function startPolling() {
+            console.log('Starting fallback polling');
+            async function pollScores() {
+                try {
+                    const response = await fetch('/api/scores');
+                    const scores = await response.json();
+                    eastScoreElement.textContent = scores.east;
+                    westScoreElement.textContent = scores.west;
+                } catch (error) {
+                    console.error('Error polling scores:', error);
+                }
+            }
+            
+            // Poll every 3 seconds
+            pollScores();
+            setInterval(pollScores, 3000);
+
         }
 
         form.addEventListener('submit', async function(event) {
@@ -526,7 +593,7 @@
                     throw new Error('Network response was not ok');
                 }
 
-                await fetchScores();
+                /*await fetchScores();*/
 
                 fireworksContainer.style.display = 'block';  // Show the fireworks container
                 fireworks.start();
@@ -550,7 +617,7 @@
 
         // Start the camera and fetch initial scores when the page loads
         startCamera();
-        fetchScores();
+        /*fetchScores();*/
 
         // Handle feedback form submission
         const moodForm = document.getElementById('moodForm');

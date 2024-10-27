@@ -1,18 +1,19 @@
 # Install required packages
 # pip install Flask Flask-SQLAlchemy google-cloud-storage
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, Response
 from flask_sqlalchemy import SQLAlchemy
 from google.cloud import storage
-import os
+import json
 import base64
 import time
 import os
 from google.cloud import storage
+from datetime import datetime
 
 # Set the environment variable to the path of your service account key file
 # MUST comment out before deploying to Heroku
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'model-city-connect-three-2b393930c5c6.json'  # Change to your path
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'model-city-connect-three-2b393930c5c6.json'  # Change to your path
 
 # Initialize Google Cloud Storage client
 storage_client = storage.Client()
@@ -20,8 +21,6 @@ bucket_name = 'image_submissions_model_city'  # Replace with your actual bucket 
 bucket = storage_client.bucket(bucket_name)
 
 app = Flask(__name__)
-
-# Database setup
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///scores.db'  
 db = SQLAlchemy(app)
 
@@ -30,9 +29,45 @@ class Score(db.Model):
     winner = db.Column(db.String(10), nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
+    if response.mimetype == 'text/event-stream':
+        response.headers['Cache-Control'] = 'no-cache'
+        response.headers['X-Accel-Buffering'] = 'no'
+    return response
+
+@app.route('/api/score-updates')
+def score_updates():
+    def generate():
+        with app.app_context():
+            while True:
+                try:
+                    # Get current scores within the application context
+                    east_score = Score.query.filter_by(winner='east').count()
+                    west_score = Score.query.filter_by(winner='west').count()
+                    
+                    # Format the SSE data
+                    data = json.dumps({
+                        'east': east_score,
+                        'west': west_score,
+                        'timestamp': datetime.now().isoformat()
+                    })
+                    
+                    yield f"data: {data}\n\n"
+                    time.sleep(2)  # Update every 2 seconds
+                except Exception as e:
+                    print(f"Error in SSE stream: {str(e)}")
+                    yield f"event: error\ndata: {str(e)}\n\n"
+                    time.sleep(2)  # Wait before retrying
+    
+    return Response(generate(), mimetype='text/event-stream')
+
 @app.route('/')
 def index():
-    return render_template('scoreboard.html')  # This serves the index.html file
+    return render_template('scoreboard.html')
 
 @app.route('/api/scores', methods=['GET'])
 def get_scores():
@@ -44,7 +79,7 @@ def get_scores():
 def submit_score():
     data = request.json
     winner = data['winner']
-    image_data = data['image'].split(',')[1]  # Remove the "data:image/jpeg;base64," part
+    image_data = data['image'].split(',')[1]
 
     # Upload image to Google Cloud Storage
     blob = bucket.blob(f'connect_three_{winner}_{int(time.time())}.jpg')
@@ -96,4 +131,4 @@ def view_feedback():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Create database tables
-    app.run(debug=True)
+    app.run(debug=True, threaded = True)

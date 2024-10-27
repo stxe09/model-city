@@ -14,7 +14,7 @@ from datetime import datetime
 
 # Set the environment variable to the path of your service account key file
 # MUST comment out before deploying to Heroku
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'model-city-connect-three-2b393930c5c6.json'  # Change to your path
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'model-city-connect-three-2b393930c5c6.json'  # Change to your path
 
 # Initialize Google Cloud Storage client
 storage_client = storage.Client()
@@ -22,13 +22,13 @@ bucket_name = 'image_submissions_model_city'  # Replace with your actual bucket 
 bucket = storage_client.bucket(bucket_name)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///scores.db'  
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///scores.dbbb'  
+dbbb = SQLAlchemy(app)
 
-class Score(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    winner = db.Column(db.String(10), nullable=False)
-    image_url = db.Column(db.String(200), nullable=False)
+class Score(dbbb.Model):
+    id = dbbb.Column(dbbb.Integer, primary_key=True)
+    winner = dbbb.Column(dbbb.String(10), nullable=False)
+    image_url = dbbb.Column(dbbb.String(200), nullable=False)
 
 @app.after_request
 def after_request(response):
@@ -92,47 +92,47 @@ def submit_score():
 
     # Save score to database
     new_score = Score(winner=winner, image_url=image_url)
-    db.session.add(new_score)
-    db.session.commit()
+    dbbb.session.add(new_score)
+    dbbb.session.commit()
 
     return jsonify({'message': 'Score submitted successfully'}), 200
 
 # TODO: Jiawei to change model after Samuel confirms questions. Please test it and make sure we can access responses at host.com/api/feedback
-class Feedback(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    # time_of_response = db.Column(db.DateTime) # Want to add this so that 
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-    group = db.Column(db.String(20), nullable=False)
-    gender = db.Column(db.String(20), nullable=False)
-    category = db.Column(db.String(20), nullable=False)
-    before = db.Column(db.String(20), nullable=False)
-    again = db.Column(db.String(20), nullable=False)
-    stress_before = db.Column(db.Integer, nullable=False)
-    stress_after = db.Column(db.Integer, nullable=False)
-    play = db.Column(db.Integer, nullable=False)
-    competition = db.Column(db.Integer, nullable=False)
-    region = db.Column(db.Integer, nullable=False)
-    sticker = db.Column(db.Integer, nullable=False)
-    space = db.Column(db.Integer, nullable=False)
-    more = db.Column(db.Text, nullable=False)
-    feedback = db.Column(db.Text, nullable=True)
+class Feedback(dbbb.Model):
+    id = dbbb.Column(dbbb.Integer, primary_key=True)
+    # time_of_response = dbbb.Column(dbbb.DateTime) # Want to add this so that 
+    date = dbbb.Column(dbbb.DateTime, default=datetime.utcnow)
+    group = dbbb.Column(dbbb.String(20), nullable=False)
+    gender = dbbb.Column(dbbb.String(20), nullable=False)
+    category = dbbb.Column(dbbb.String(20), nullable=False)
+    before = dbbb.Column(dbbb.String(20), nullable=False)
+    again = dbbb.Column(dbbb.String(20), nullable=False)
+    stress_before = dbbb.Column(dbbb.Integer, nullable=False)
+    stress_after = dbbb.Column(dbbb.Integer, nullable=False)
+    play = dbbb.Column(dbbb.Integer, nullable=False)
+    competition = dbbb.Column(dbbb.Integer, nullable=False)
+    region = dbbb.Column(dbbb.Integer, nullable=False)
+    sticker = dbbb.Column(dbbb.Integer, nullable=False)
+    space = dbbb.Column(dbbb.Integer, nullable=False)
+    more = dbbb.Column(dbbb.Text, nullable=False)
+    feedback = dbbb.Column(dbbb.Text, nullable=True)
     
 @app.route('/api/submit-feedback', methods=['POST'])
 def submit_feedback():
     data = request.json
-    group = data['group']
-    gender = data['gender']
-    category = data['category']
-    before = data['before']
-    again = data['again']
-    stress_before = data['stress_before']
-    stress_after = data['stress_after']
-    play = data['play']
-    competition = data['competition']
-    region = data['region']
-    sticker = data['sticker']
-    space = data['space']
-    more = data['more']
+    group = data.get('group')  # No KeyError, returns None if missing
+    gender = data.get('gender')
+    category = data.get('category')
+    before = data.get('before')
+    again = data.get('again')
+    stress_before = data.get('stress_before')
+    stress_after = data.get('stress_after')
+    play = data.get('play')
+    competition = data.get('competition')
+    region = data.get('region')
+    sticker = data.get('sticker')
+    space = data.get('space')
+    more = data.get('more')
     feedback = data.get('feedback', '')  # Optional feedback
 
     # Save feedback to database
@@ -151,8 +151,8 @@ def submit_feedback():
         space = space,
         more = more,
         feedback=feedback)
-    db.session.add(new_response)
-    db.session.commit()
+    dbbb.session.add(new_response)
+    dbbb.session.commit()
 
     return jsonify({'message': 'Feedback submitted successfully'}), 200
 
@@ -178,7 +178,40 @@ def view_feedback():
         'feedback': f.feedback,
     } for f in feedbacks])
 
+"""
+To access the admin panel:
+
+Press Ctrl + Shift + K to show/hide the admin panel
+Enter your admin key in the password field: model-city-reset-scores
+Click "Reset All Scores" to reset the scores
+Confirm the reset when prompted
+"""
+@app.route('/api/reset-scores', methods=['POST'])
+def reset_scores():
+    # Add a secret key check for security
+    if request.headers.get('X-Admin-Key') != 'model-city-reset-scores':
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    try:
+        # Delete all scores from the database
+        Score.query.delete()
+        dbbb.session.commit()
+        return jsonify({'message': 'Scores reset successfully'}), 200
+    except Exception as e:
+        dbbb.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Add this function to help recover if needed
+@app.route('/api/scores/count', methods=['GET'])
+def get_score_count():
+    try:
+        count = Score.query.count()
+        return jsonify({'total_scores': count}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Create database tables
+        dbbb.create_all()  # Create database tables
     app.run(debug=True, threaded = True)

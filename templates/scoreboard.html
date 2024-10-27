@@ -383,6 +383,60 @@
 
                 <div class="stress-level-container">
                     <div class="stress-level">
+                        <label for="group">Play in a group?</label>
+                        <select id="group" name="group" required>
+                            <option value="">Select</option>
+                            <option value="solo">Solo</option>
+                            <option value="2-3">2-3</option>
+                            <option value="4-5">4-5</option>
+                            <option value="more_than_5">More than 5</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select</option>
+                            <option value="F">Female</option>
+                            <option value="M">Male</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select</option>
+                            <option value="office_worker">Office Worker</option>
+                            <option value="tourist">Tourist</option>
+                            <option value="student">Student</option>
+                            <option value="URA_stuff">URA stuff</option>
+                            <option value="passerby">Passerby</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stress-level-container">
+                    <div class="stress-level">
+                        <label for="before">Played before?</label>
+                        <select id="before" name="before" required>
+                            <option value="">Select</option>
+                            <option value="no">No</option>
+                            <option value="Mon">Yes, on Monday</option>
+                            <option value="Tues">Yes, on Tuesday</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="again">Come back again?</label>
+                        <select id="again" name="again" required>
+                            <option value="">Select</option>
+                            <option value="Y">Yes</option>
+                            <option value="N_time">No, no time</option>
+                            <option value="N_interest">No, not interested</option>
+                            <option value="N_area">No, won't be in this area</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stress-level-container">
+                    <div class="stress-level">
                         <label for="stress_before">Stress Levels Before 😟</label>
                         <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
                     </div>
@@ -392,6 +446,69 @@
                     </div>
                 </div>
 
+                <label for="feedback">Which aspect of this activity did you enjoy the most? (Rank 1 - 5 with 1 being the activity you most enjoyed and 5 being the activity you least enjoyed).</label>
+                <div class="stress-level-container">
+                    <div class="stress-level">
+                        <label for="play">Playing Connect 3</label>
+                        <select id="play" name="play" required>
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="competition">Competition element</label>
+                        <select id="competition" name="competition" required>
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="region">Regional theme</label>
+                        <select id="region" name="region" required>
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="sticker">Sticker element</label>
+                        <select id="sticker" name="sticker" required>
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="space">Playing in public space</label>
+                        <select id="space" name="space" required>
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <label for="more">Did this activity provide a refreshing break?</label>
+                <label for="more">Would you like to see more of such activities in public space? Why/Why not?💭</label>
+                <textarea id="more" name="more" placeholder="Share your thoughts..."></textarea>
                 <label for="feedback">Any feedback for us? 💭</label>
                 <textarea id="feedback" name="feedback" placeholder="Share your thoughts..."></textarea>
                 <button type="submit">📤 Submit Feedback</button>

@@ -48,7 +48,6 @@
             background: white;
             color: var(--text);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            white-space: nowrap;
             flex: 1;
             min-width: 120px;
         }
@@ -286,15 +285,38 @@
         }
 
         .stress-level-container {
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
         }
 
         .stress-level {
-            flex: 1;
-            margin-right: 100px; 
+            margin: 0;
+            text-align: center;
+        }
+
+        .stress-level label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.2;
+        }
+
+        .stress-level input {
+            width: 80px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        @media (max-width: 480px) {
+            .stress-level label {
+                font-size: 0.85rem;
+            }
+            
+            .stress-level input {
+                width: 60px;
+            }
         }
 
     </style>

@@ -518,9 +518,6 @@
                         </select>
                     </div>
                 </div>
-
-                </div>
-
                 <label for="more">Did this activity provide a refreshing break?</label>
                 <label for="more">Would you like to see more of such activities in public space? <br> Why/Why not?💭</label>
                 <textarea id="more" name="more" placeholder="Share your thoughts..."></textarea>
@@ -708,7 +705,10 @@
             }
 
             const winner = document.querySelector('input[name="winner"]:checked').value;
-            
+            /*if (! document.querySelector('input[name="winner"]:checked')) {
+                alert("Please select a winner (East or West) before submitting!");
+                return;
+            }*/
             try {
                 const response = await fetch('/api/submit-score', {
                     method: 'POST',
@@ -758,6 +758,11 @@
             const stress_before = document.getElementById('stress_before').value;
             const stress_after = document.getElementById('stress_after').value;
             const feedback = document.getElementById('feedback').value;
+
+            if ( !stress_before || !stress_after) {
+                alert("Please fill in all required fields (marked with *)");
+                return;
+            }
 
             try {
                 const response = await fetch('/api/submit-feedback', {

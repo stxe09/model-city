@@ -285,15 +285,17 @@
         }
 
         .stress-level-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
             margin: 20px 0;
+            width: 100%;
         }
 
         .stress-level {
-            margin: 0;
+            flex: 1;
             text-align: center;
+            max-width: 50%;
         }
 
         .stress-level label {
@@ -304,18 +306,18 @@
         }
 
         .stress-level input {
-            width: 80px;
+            width: 60px;
             margin: 0 auto;
             display: block;
         }
-        
+
         @media (max-width: 480px) {
-            .stress-level label {
-                font-size: 0.85rem;
+            .stress-level {
+                padding: 0 5px;
             }
             
-            .stress-level input {
-                width: 60px;
+            .stress-level label {
+                font-size: 0.85rem;
             }
         }
 
@@ -379,11 +381,11 @@
 
                 <div class="stress-level-container">
                     <div class="stress-level">
-                        <label for="stress_before">😟Stress Level Before</label>
+                        <label for="stress_before">Stress Levels Before 😟</label>
                         <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
                     </div>
                     <div class="stress-level">
-                        <label for="stress_after">🥳Stress Level After</label>
+                        <label for="stress_after">Stress Levels After 🥳</label>
                         <input type="number" id="stress_after" name="stress_after" min="1" max="10" required>
                     </div>
                 </div>

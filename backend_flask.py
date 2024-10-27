@@ -7,6 +7,7 @@ from google.cloud import storage
 import os
 import base64
 import time
+from datetime import datetime
 import os
 from google.cloud import storage
 
@@ -68,16 +69,29 @@ class Feedback(db.Model):
     feedback = db.Column(db.Text, nullable=True)
     stress_before = db.Column(db.Integer, nullable=False)
     stress_after = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    group = db.Column(db.String(20), nullable=False)
+    gender = db.Column(db.String(20), nullable=False)
+    category = db.Column(db.String(20), nullable=False)
 
 @app.route('/api/submit-feedback', methods=['POST'])
 def submit_feedback():
     data = request.json
+    group = data['group']
+    gender = data['gender']
+    category = data['category']
     stress_before = data['stress_before']
     stress_after = data['stress_after']
     feedback = data.get('feedback', '')  # Optional feedback
 
     # Save feedback to database
-    new_response = Feedback(stress_before=stress_before, stress_after=stress_after,feedback=feedback)
+    new_response = Feedback(
+        group = group,
+        gender = gender,
+        category = category,
+        stress_before=stress_before, 
+        stress_after=stress_after,
+        feedback=feedback)
     db.session.add(new_response)
     db.session.commit()
 
@@ -87,7 +101,11 @@ def submit_feedback():
 def view_feedback():
     feedbacks = Feedback.query.all()
     return jsonify([{
-        'id': f.id, 
+        'id': f.id,
+        'date': f.date.isoformat(),
+        'group': f.group,
+        'gender': f.gender,
+        'category': f.category, 
         'feedback': f.feedback,
         'stress_before': f.stress_before,
         'stress_after': f.stress_after

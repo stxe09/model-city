@@ -383,6 +383,38 @@
 
                 <div class="stress-level-container">
                     <div class="stress-level">
+                        <label for="group_play">Play in a group?</label>
+                        <select id="group_play" name="group_play" required>
+                            <option value="">Select</option>
+                            <option value="solo">Solo</option>
+                            <option value="2-3">2-3</option>
+                            <option value="4-5">4-5</option>
+                            <option value="more_than_5">More than 5</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select</option>
+                            <option value="F">Female</option>
+                            <option value="M">Male</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select</option>
+                            <option value="office_worker">Office Worker</option>
+                            <option value="tourist">Tourist</option>
+                            <option value="student">Student</option>
+                            <option value="student">URA stuff</option>
+                            <option value="student">Passerby</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stress-level-container">
+                    <div class="stress-level">
                         <label for="stress_before">Stress Levels Before 😟</label>
                         <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
                     </div>

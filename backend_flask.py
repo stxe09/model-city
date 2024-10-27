@@ -73,6 +73,8 @@ class Feedback(db.Model):
     group = db.Column(db.String(20), nullable=False)
     gender = db.Column(db.String(20), nullable=False)
     category = db.Column(db.String(20), nullable=False)
+    before = db.Column(db.String(20), nullable=False)
+    again = db.Column(db.String(20), nullable=False)
 
 @app.route('/api/submit-feedback', methods=['POST'])
 def submit_feedback():
@@ -80,6 +82,8 @@ def submit_feedback():
     group = data['group']
     gender = data['gender']
     category = data['category']
+    before = data['before']
+    again = data['again']
     stress_before = data['stress_before']
     stress_after = data['stress_after']
     feedback = data.get('feedback', '')  # Optional feedback
@@ -89,6 +93,8 @@ def submit_feedback():
         group = group,
         gender = gender,
         category = category,
+        before = before,
+        again = again,
         stress_before=stress_before, 
         stress_after=stress_after,
         feedback=feedback)
@@ -106,6 +112,8 @@ def view_feedback():
         'group': f.group,
         'gender': f.gender,
         'category': f.category, 
+        'before': f.before,
+        'again': f.again,
         'feedback': f.feedback,
         'stress_before': f.stress_before,
         'stress_after': f.stress_after

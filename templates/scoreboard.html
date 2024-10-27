@@ -383,8 +383,8 @@
 
                 <div class="stress-level-container">
                     <div class="stress-level">
-                        <label for="group_play">Play in a group?</label>
-                        <select id="group_play" name="group_play" required>
+                        <label for="group">Play in a group?</label>
+                        <select id="group" name="group" required>
                             <option value="">Select</option>
                             <option value="solo">Solo</option>
                             <option value="2-3">2-3</option>
@@ -407,8 +407,30 @@
                             <option value="office_worker">Office Worker</option>
                             <option value="tourist">Tourist</option>
                             <option value="student">Student</option>
-                            <option value="student">URA stuff</option>
-                            <option value="student">Passerby</option>
+                            <option value="URA_stuff">URA stuff</option>
+                            <option value="passerby">Passerby</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stress-level-container">
+                    <div class="stress-level">
+                        <label for="before">Played before?</label>
+                        <select id="before" name="before" required>
+                            <option value="">Select</option>
+                            <option value="no">No</option>
+                            <option value="Mon">Yes, on Monday</option>
+                            <option value="Tues">Yes, on Tuesday</option>
+                        </select>
+                    </div>
+                    <div class="stress-level">
+                        <label for="again">Come back again?</label>
+                        <select id="again" name="again" required>
+                            <option value="">Select</option>
+                            <option value="Y">Yes</option>
+                            <option value="N_time">No, no time</option>
+                            <option value="N_interest">No, not interested</option>
+                            <option value="N_area">No, won't be in this area</option>
                         </select>
                     </div>
                 </div>

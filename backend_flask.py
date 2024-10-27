@@ -14,7 +14,7 @@ from datetime import datetime
 
 # Set the environment variable to the path of your service account key file
 # MUST comment out before deploying to Heroku
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'model-city-connect-three-2b393930c5c6.json'  # Change to your path
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'model-city-connect-three-2b393930c5c6.json'  # Change to your path
 
 # Initialize Google Cloud Storage client
 storage_client = storage.Client()

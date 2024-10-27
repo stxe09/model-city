@@ -66,16 +66,22 @@ def submit_score():
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # time_of_response = db.Column(db.DateTime) # Want to add this so that 
-    feedback = db.Column(db.Text, nullable=True)
-    stress_before = db.Column(db.Integer, nullable=False)
-    stress_after = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     group = db.Column(db.String(20), nullable=False)
     gender = db.Column(db.String(20), nullable=False)
     category = db.Column(db.String(20), nullable=False)
     before = db.Column(db.String(20), nullable=False)
     again = db.Column(db.String(20), nullable=False)
-
+    stress_before = db.Column(db.Integer, nullable=False)
+    stress_after = db.Column(db.Integer, nullable=False)
+    play = db.Column(db.Integer, nullable=False)
+    competition = db.Column(db.Integer, nullable=False)
+    region = db.Column(db.Integer, nullable=False)
+    sticker = db.Column(db.Integer, nullable=False)
+    space = db.Column(db.Integer, nullable=False)
+    more = db.Column(db.String(20), nullable=False)
+    feedback = db.Column(db.Text, nullable=True)
+    
 @app.route('/api/submit-feedback', methods=['POST'])
 def submit_feedback():
     data = request.json
@@ -86,6 +92,12 @@ def submit_feedback():
     again = data['again']
     stress_before = data['stress_before']
     stress_after = data['stress_after']
+    play = data['play']
+    competition = data['competition']
+    region = data['region']
+    sticker = data['sticker']
+    space = data['space']
+    more = data['more']
     feedback = data.get('feedback', '')  # Optional feedback
 
     # Save feedback to database
@@ -97,6 +109,12 @@ def submit_feedback():
         again = again,
         stress_before=stress_before, 
         stress_after=stress_after,
+        play = play,
+        competition = competition,
+        region = region,
+        sticker = sticker,
+        space = space,
+        more = more,
         feedback=feedback)
     db.session.add(new_response)
     db.session.commit()
@@ -114,9 +132,15 @@ def view_feedback():
         'category': f.category, 
         'before': f.before,
         'again': f.again,
-        'feedback': f.feedback,
         'stress_before': f.stress_before,
-        'stress_after': f.stress_after
+        'stress_after': f.stress_after,
+        'play': f.play,
+        'competition': f.competition,
+        'region': f.region,
+        'sticker': f.sticker,
+        'space': f.space,
+        'more': f.more,
+        'feedback': f.feedback,
     } for f in feedbacks])
 
 if __name__ == '__main__':

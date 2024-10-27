@@ -178,6 +178,39 @@ def view_feedback():
         'feedback': f.feedback,
     } for f in feedbacks])
 
+"""
+To access the admin panel:
+
+Press Ctrl + Shift + K to show/hide the admin panel
+Enter your admin key in the password field: model-city-reset-scores
+Click "Reset All Scores" to reset the scores
+Confirm the reset when prompted
+"""
+@app.route('/api/reset-scores', methods=['POST'])
+def reset_scores():
+    # Add a secret key check for security
+    if request.headers.get('X-Admin-Key') != 'model-city-reset-scores':
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    try:
+        # Delete all scores from the database
+        Score.query.delete()
+        db.session.commit()
+        return jsonify({'message': 'Scores reset successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Add this function to help recover if needed
+@app.route('/api/scores/count', methods=['GET'])
+def get_score_count():
+    try:
+        count = Score.query.count()
+        return jsonify({'total_scores': count}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Create database tables

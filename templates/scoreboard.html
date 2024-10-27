@@ -373,6 +373,11 @@
         </div>
 
         <div class="fireworks"></div>
+
+        <div id="adminPanel" style="display: none; margin-top: 20px; padding: 10px; border-top: 1px solid #ccc;">
+            <input type="password" id="adminKey" placeholder="Admin Key" style="margin-right: 10px;">
+            <button id="resetScores" class="danger-button">Reset All Scores</button>
+        </div>
     </div>
 
     <!-- Survey Section -->
@@ -770,6 +775,45 @@
             }
         });
 
+        const adminPanel = document.getElementById('adminPanel');
+        const adminKey = document.getElementById('adminKey');
+        const resetScores = document.getElementById('resetScores');
+
+        // Show admin panel with keyboard shortcut (Ctrl + Shift + A)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+                adminPanel.style.display = adminPanel.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+
+        resetScores.addEventListener('click', async function() {
+            if (!confirm('Are you sure you want to reset all scores? This cannot be undone!')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/reset-scores', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Key': adminKey.value
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Reset failed');
+                }
+
+                alert('Scores reset successfully!');
+                // Update the displayed scores
+                eastScoreElement.textContent = '0';
+                westScoreElement.textContent = '0';
+                adminKey.value = ''; // Clear the admin key
+            } catch (error) {
+                console.error('Error resetting scores:', error);
+                alert('Error resetting scores. Please check your admin key and try again.');
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             contentSections.forEach(section => {

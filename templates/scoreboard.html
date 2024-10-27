@@ -383,7 +383,7 @@
 
                 <div class="stress-level-container">
                     <div class="stress-level">
-                        <label for="group">Play in a group?</label>
+                        <label for="group">Played in a group?</label>
                         <select id="group" name="group" required>
                             <option value="">Select</option>
                             <option value="solo">Solo</option>
@@ -398,6 +398,7 @@
                             <option value="">Select</option>
                             <option value="F">Female</option>
                             <option value="M">Male</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
                     <div class="stress-level">
@@ -424,7 +425,7 @@
                         </select>
                     </div>
                     <div class="stress-level">
-                        <label for="again">Come back again?</label>
+                        <label for="again">Would you come back again?</label>
                         <select id="again" name="again" required>
                             <option value="">Select</option>
                             <option value="Y">Yes</option>
@@ -437,11 +438,11 @@
 
                 <div class="stress-level-container">
                     <div class="stress-level">
-                        <label for="stress_before">Stress Levels Before 😟</label>
+                        <label for="stress_before">Stress Levels Before 😟<span style="color: red;">*</span></label>
                         <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
                     </div>
                     <div class="stress-level">
-                        <label for="stress_after">Stress Levels After 🥳</label>
+                        <label for="stress_after">Stress Levels After 🥳<span style="color: red;">*</span></label>
                         <input type="number" id="stress_after" name="stress_after" min="1" max="10" required>
                     </div>
                 </div>
@@ -507,7 +508,7 @@
                 </div>
 
                 <label for="more">Did this activity provide a refreshing break?</label>
-                <label for="more">Would you like to see more of such activities in public space? Why/Why not?💭</label>
+                <label for="more">Would you like to see more of such activities in public space? <br> Why/Why not?💭</label>
                 <textarea id="more" name="more" placeholder="Share your thoughts..."></textarea>
                 <label for="feedback">Any feedback for us? 💭</label>
                 <textarea id="feedback" name="feedback" placeholder="Share your thoughts..."></textarea>

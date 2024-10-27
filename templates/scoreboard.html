@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect Three Scorer</title>
+    <title>Territory Tri-umph</title>
     <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -26,6 +26,53 @@
                 radial-gradient(circle at 10% 20%, rgba(255, 107, 107, 0.05) 0%, transparent 20%),
                 radial-gradient(circle at 90% 60%, rgba(78, 205, 196, 0.05) 0%, transparent 20%),
                 radial-gradient(circle at 50% 50%, rgba(255, 230, 109, 0.05) 0%, transparent 30%);
+        }
+
+        /* Tab Navigation Styles */
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .tab-button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.2);
+        }
+
+        .tab-button.active {
+            background: var(--secondary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Content Section Styles */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .instructions {
@@ -248,67 +295,111 @@
     </style>
 </head>
 <body>
-    <h1>✨ Connect Three Scorer ✨</h1>
-    <div class="instructions">
-        📸 Take a picture of your game board, select the winner, and share your mood!
-        <br>Your scores will be updated automatically.
+    <h1>✨ Territory Tri-umph ✨</h1>
+    
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+        <button class="tab-button" data-tab="scorer">🎮 Connect Three Scorer </button>
+        <button class="tab-button" data-tab="survey">📝 Survey Form </button>
     </div>
-    <div id="cameraContainer">
-        <video id="cameraFeed" autoplay playsinline></video>
-        <img id="capturedImage" style="display: none;">
-        <button id="captureButton">📸 Take Picture</button>
-        <button id="retakeButton" style="display: none;">🔄 Retake Picture</button>
-    </div>
-    <form id="scoreForm">
-        <fieldset style="border: none;">
-            <legend>Who won? 🏆</legend>
-            <div style="text-align: center;">
-                <input type="radio" id="east" name="winner" value="east" required>
-                <label for="east" class="radio-label">East 🌅</label>
-                
-                <input type="radio" id="west" name="winner" value="west" required>
-                <label for="west" class="radio-label">West 🌄</label>
-            </div>
-        </fieldset>
-        
-        <button type="submit">🎉 Submit Score 🎉</button>
-    </form>
 
-    <div id="scoreboard">
-        <div class="score-container">
-            <div class="score-label">East 🌅</div>
-            <div class="score-value" id="eastScore">0</div>
+    <!-- Scorer Section -->
+    <div id="scorer-section" class="content-section">
+        <div class="instructions">
+            📸 Take a picture of your game board, select the winner, and submit!
+            <br>Your scores will be updated automatically.
         </div>
-        <div class="score-container">
-            <div class="score-label">West 🌄</div>
-            <div class="score-value" id="westScore">0</div>
+        <div id="cameraContainer">
+            <video id="cameraFeed" autoplay playsinline></video>
+            <img id="capturedImage" style="display: none;">
+            <button id="captureButton">📸 Take Picture</button>
+            <button id="retakeButton" style="display: none;">🔄 Retake Picture</button>
         </div>
+        <form id="scoreForm">
+            <fieldset style="border: none;">
+                <legend>Who won? 🏆</legend>
+                <div style="text-align: center;">
+                    <input type="radio" id="east" name="winner" value="east" required>
+                    <label for="east" class="radio-label">East 🌅</label>
+                    
+                    <input type="radio" id="west" name="winner" value="west" required>
+                    <label for="west" class="radio-label">West 🌄</label>
+                </div>
+            </fieldset>
+            
+            <button type="submit">🎉 Submit Score 🎉</button>
+        </form>
+
+        <div id="scoreboard">
+            <div class="score-container">
+                <div class="score-label">East 🌅</div>
+                <div class="score-value" id="eastScore">0</div>
+            </div>
+            <div class="score-container">
+                <div class="score-label">West 🌄</div>
+                <div class="score-value" id="westScore">0</div>
+            </div>
+        </div>
+
+        <div class="fireworks"></div>
     </div>
 
-    <div class="fireworks"></div>
+    <!-- Survey Section -->
+    <div id="survey-section" class="content-section">
+        <form id="moodForm">
+            <fieldset style="border: none;">
+                <legend>Help us improve! 😊</legend>
 
-    <form id="moodForm">
-        <fieldset style="border: none;">
-            <legend>Help us improve! 😊</legend>
-
-            <div class="stress-level-container">
-                <div class="stress-level">
-                    <label for="stress_before">😟Stress Level Before</label>
-                    <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
+                <div class="stress-level-container">
+                    <div class="stress-level">
+                        <label for="stress_before">😟Stress Level Before</label>
+                        <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
+                    </div>
+                    <div class="stress-level">
+                        <label for="stress_after">🥳Stress Level After</label>
+                        <input type="number" id="stress_after" name="stress_after" min="1" max="10" required>
+                    </div>
                 </div>
-                <div class="stress-level">
-                    <label for="stress_after">🥳Stress Level After</label>
-                    <input type="number" id="stress_after" name="stress_after" min="1" max="10" required>
-                </div>
-            </div>
 
-            <label for="feedback">Any feedback for us? 💭</label>
-            <textarea id="feedback" name="feedback" placeholder="Share your thoughts..."></textarea>
-            <button type="submit">📤 Submit Feedback</button>
-        </fieldset>
-    </form>
+                <label for="feedback">Any feedback for us? 💭</label>
+                <textarea id="feedback" name="feedback" placeholder="Share your thoughts..."></textarea>
+                <button type="submit">📤 Submit Feedback</button>
+            </fieldset>
+        </form>
+    </div>
 
     <script>
+        // Tab Functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        function switchTab(tabId) {
+            // Update button states
+            tabButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.tab === tabId);
+            });
+
+            // Update content visibility
+            contentSections.forEach(section => {
+                if (section.id === `${tabId}-section`) {
+                    section.classList.add('active');
+                    if (tabId === 'scorer') {
+                        startCamera();
+                    } else {
+                        stopCamera();
+                    }
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+        }
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                switchTab(button.dataset.tab);
+            });
+        });
+
         const cameraFeed = document.getElementById('cameraFeed');
         const capturedImage = document.getElementById('capturedImage');
         const captureButton = document.getElementById('captureButton');
@@ -461,6 +552,13 @@
                 console.error('Error submitting feedback:', error);
                 alert('Error submitting feedback. Please try again.');
             }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
         });
     </script>
 </body>

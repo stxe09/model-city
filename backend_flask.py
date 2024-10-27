@@ -11,6 +11,7 @@ import os
 from google.cloud import storage
 
 # Set the environment variable to the path of your service account key file
+# MUST comment out before deploying to Heroku
 # os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'model-city-connect-three-2b393930c5c6.json'  # Change to your path
 
 # Initialize Google Cloud Storage client
@@ -60,8 +61,10 @@ def submit_score():
 
     return jsonify({'message': 'Score submitted successfully'}), 200
 
+# TODO: Jiawei to change model after Samuel confirms questions. Please test it and make sure we can access responses at host.com/api/feedback
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    # time_of_response = db.Column(db.DateTime) # Want to add this so that 
     feedback = db.Column(db.Text, nullable=True)
     stress_before = db.Column(db.Integer, nullable=False)
     stress_after = db.Column(db.Integer, nullable=False)

@@ -313,7 +313,7 @@
         
         .stress-measure label {
             white-space: nowrap;
-            font-size: clamp(0.75rem, 2vw, 1rem);
+            font-size: clamp(0.87rem, 2vw, 1rem);
         }
 
         .stress-level select,
@@ -524,11 +524,11 @@
                 </div>
                 <label for="feedback">Rate Stress Levels from 1 to 10 (1 being not stressed and 10 being very stressed): </label>
                 <div class="stress-level-container">
-                    <div class="stress-level">
+                    <div class="stress-measure">
                         <label for="stress_before">Stress Levels Before 😟<span style="color: red;">*</span></label>
                         <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
                     </div>
-                    <div class="stress-level">
+                    <div class="stress-measure">
                         <label for="stress_after">Stress Levels After 🥳<span style="color: red;">*</span></label>
                         <input type="number" id="stress_after" name="stress_after" min="1" max="10" required>
                     </div>

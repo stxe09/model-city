@@ -409,6 +409,26 @@
             100% { transform: rotate(360deg); }
         }
 
+        .button-row {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        }
+
+        .btn-secondary {
+        background-color: #f1f1f1;
+        border-color: #f1f1f1;
+        color: #333;
+        cursor: pointer;
+        }
+
+        .btn-secondary.active {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+        }
+
     </style>
 </head>
 <body>
@@ -532,72 +552,18 @@
                     </div>
                 </div>
 
-                <label for="feedback">Which aspect of this activity did you enjoy the most? (Rate 1 - 5 with 1 being the lowest score and 5 bing the highest score).</label>
-                <div class="stress-level-container">
-                    <div class="stress-level">
-                        <label for="play">Strategy</label>
-                        <select id="play" name="play" >
-                            <option value="">Select</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="stress-level-container">
-                    <div class="stress-level">
-                        <label for="competition">Competition element</label>
-                        <select id="competition" name="competition" >
-                            <option value="">Select</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="stress-level-container">
-                    <div class="stress-level">
-                        <label for="region">Regional pride</label>
-                        <select id="region" name="region" >
-                            <option value="">Select</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="stress-level-container">
-                    <div class="stress-level">
-                        <label for="sticker">Inputting information (Stickers) </label>
-                        <select id="sticker" name="sticker" >
-                            <option value="">Select</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="stress-level-container">
-                    <div class="stress-level">
-                        <label for="space">Playing in public space</label>
-                        <select id="space" name="space" >
-                            <option value="">Select</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
+                <label for="feedback">Select element(s) of this activity that you enjoyed:</label>
+                <div class="button-row">
+                    <button type="button" class="btn btn-secondary btn-sm" data-value="strategy">Strategy</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-value="competition">Competition</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-value="region">Regional pride</button>
+                  </div>
+                  
+                  <div class="button-row">
+                    <button type="button" class="btn btn-secondary btn-sm" data-value="sticker">Inputting information</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-value="space">Playing in public space</button>
+                  </div>
+             
                  <label for="feedback">Any feedback for us? 💭</label>
                 <textarea id="feedback" name="feedback" placeholder="Share your thoughts..."></textarea>
                 <button type="submit">📤 Submit Feedback</button>
@@ -838,7 +804,25 @@
         // Start the camera and fetch initial scores when the page loads
         startCamera();
         /*fetchScores();*/
+        
+        const buttons = document.querySelectorAll('.btn-secondary');
+        const selectedElements = [];
 
+        buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('active');
+            const value = button.dataset.value;
+            if (button.classList.contains('active')) {
+            selectedElements.push(value);
+            } else {
+            const index = selectedElements.indexOf(value);
+            if (index !== -1) {
+                selectedElements.splice(index, 1);
+            }
+            }
+            console.log(selectedElements);
+        });
+        });
         // Handle feedback form submission
         const moodForm = document.getElementById('moodForm');
         moodForm.addEventListener('submit', async function(event) {
@@ -850,15 +834,16 @@
             const again = document.getElementById('again').value;
             const stress_before = document.getElementById('stress_before').value;
             const stress_after = document.getElementById('stress_after').value;
-            const play = document.getElementById('play').value;
-            const competition = document.getElementById('competition').value;
-            const region = document.getElementById('region').value;
-            const sticker = document.getElementById('sticker').value;
-            const space = document.getElementById('space').value;
+            // Get the values based on button clicks
+            const play = selectedElements.includes('strategy') ? 5 : 1;
+            const competition = selectedElements.includes('competition') ? 5 : 1;
+            const region = selectedElements.includes('region') ? 5 : 1;
+            const sticker = selectedElements.includes('sticker') ? 5 : 1;
+            const space = selectedElements.includes('space') ? 5 : 1;
             const more = "Question Removed";
             const feedback = document.getElementById('feedback').value;
-
-            if ( !stress_before || !stress_after) {
+            const buttons = document.querySelectorAll('.btn-secondary');
+                  if ( !stress_before || !stress_after) {
                 alert("Please fill in all required fields (marked with *)");
                 return;
             }
@@ -892,6 +877,11 @@
                 }
 
                 alert('Thank you for your feedback!');
+                const buttons = document.querySelectorAll('.btn-secondary');
+                buttons.forEach((button) => {
+                     button.classList.remove('active');
+                });
+                
                 moodForm.reset();
             } catch (error) {
                 console.error('Error submitting feedback:', error);

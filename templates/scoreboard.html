@@ -530,7 +530,7 @@
                     </div>
                 </div>
 
-                <label for="feedback">Which aspect of this activity did you enjoy the most? (Rank 1 - 5 with 1  being the activity you most enjoyed and 5 being the activity you least enjoyed).</label>
+                <label for="feedback">Which aspect of this activity did you enjoy the most? (Rate 1 - 5 with 1  being the activity you most enjoyed and 5 being the activity you least enjoyed).</label>
                 <div class="stress-level-container">
                     <div class="stress-level">
                         <label for="play">Strategy</label>
@@ -596,10 +596,7 @@
                         </select>
                     </div>
                 </div>
-                <label for="more">Did this activity provide a refreshing break?</label>
-                <label for="more">Would you like to see more of such activities in public space? <br> Why/Why not?💭</label>
-                <textarea id="more" name="more" placeholder="Share your thoughts..."></textarea>
-                <label for="feedback">Any feedback for us? 💭</label>
+                 <label for="feedback">Any feedback for us? 💭</label>
                 <textarea id="feedback" name="feedback" placeholder="Share your thoughts..."></textarea>
                 <button type="submit">📤 Submit Feedback</button>
             </fieldset>
@@ -845,7 +842,7 @@
         moodForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             const group = document.getElementById('group').value;
-            const gender = document.getElementById('gender').value;
+            const gender = "Question Removed";
             const category = document.getElementById('category').value;
             const before = document.getElementById('before').value;
             const again = document.getElementById('again').value;
@@ -856,7 +853,7 @@
             const region = document.getElementById('region').value;
             const sticker = document.getElementById('sticker').value;
             const space = document.getElementById('space').value;
-            const more = document.getElementById('more').value;
+            const more = "Question Removed";
             const feedback = document.getElementById('feedback').value;
 
             if ( !stress_before || !stress_after) {

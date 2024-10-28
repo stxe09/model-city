@@ -779,11 +779,11 @@
 
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
-            
+            /*
             if (capturedImage.style.display === 'none') {
                 alert("Please take a picture of the Connect Three board first.");
                 return;
-            }
+            }*/
 
             const winner = document.querySelector('input[name="winner"]:checked').value;
             const loadingOverlay = document.querySelector('.loading-overlay');

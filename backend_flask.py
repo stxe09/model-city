@@ -80,16 +80,19 @@ def get_scores():
 def submit_score():
     data = request.json
     winner = data['winner']
-    image_data = data['image'].split(',')[1]
+    if data['image']:
+        image_data = data['image'].split(',')[1]
+        # Upload image to Google Cloud Storage
+        blob = bucket.blob(f'connect_three_{winner}_{int(time.time())}.jpg')
+        blob.upload_from_string(base64.b64decode(image_data), content_type='image/jpeg')
 
-    # Upload image to Google Cloud Storage
-    blob = bucket.blob(f'connect_three_{winner}_{int(time.time())}.jpg')
-    blob.upload_from_string(base64.b64decode(image_data), content_type='image/jpeg')
+        # Create public URL
+        blob.make_public()
+        image_url = blob.public_url
 
-    # Create public URL
-    blob.make_public()
-    image_url = blob.public_url
-
+    else: 
+        image_data = "none"
+    
     # Save score to database
     new_score = Score(winner=winner, image_url=image_url)
     dbbb.session.add(new_score)

@@ -289,37 +289,72 @@
         .stress-level-container {
             display: flex;
             justify-content: space-between;
-            gap: 10px;
+            gap: 20px;
             margin: 20px 0;
             width: 100%;
         }
 
         .stress-level {
             flex: 1;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
             max-width: 50%;
         }
 
         .stress-level label {
-            display: block;
+            min-height: 2.4em;  /* Accommodate 2 lines of text */
+            display: flex;
+            align-items: flex-end;
             margin-bottom: 8px;
             font-size: 0.9rem;
             line-height: 1.2;
         }
 
+        .stress-level select,
         .stress-level input {
-            width: 60px;
-            margin: 0 auto;
-            display: block;
+            width: 100%;
+            height: 40px;
+            padding: 8px;
+            margin-top: auto;
+            border: 2px solid #eee;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Fredoka', sans-serif;
         }
 
+        .stress-level select:hover,
+        .stress-level input:hover,
+        select:hover, 
+        input[type="number"]:hover,
+        .stress-level select:focus,
+        .stress-level input:focus,
+        select:focus, 
+        input[type="number"]:focus {
+            background-color: #e8e8e8;  /* Slightly darker grey on hover/focus */
+            outline: none;
+        }
+
+        /* Make all form controls have consistent height */
+        select, input[type="number"] {
+            height: 40px;
+            box-sizing: border-box;
+        }
+
+        /* Ensure questions with longer text don't break layout */
         @media (max-width: 480px) {
-            .stress-level {
-                padding: 0 5px;
+            .stress-level-container {
+                gap: 10px;
             }
             
             .stress-level label {
                 font-size: 0.85rem;
+                min-height: 3em;  /* More space for text on mobile */
+            }
+
+            .stress-level select,
+            .stress-level input {
+                padding: 4px;
             }
         }
 

@@ -310,6 +310,12 @@
             line-height: 1.2;
         }
 
+        
+        .stress-measure label {
+            white-space: nowrap;
+            font-size: clamp(0.75rem, 2vw, 1rem);
+        }
+
         .stress-level select,
         .stress-level input {
             width: 100%;
@@ -350,6 +356,10 @@
             .stress-level label {
                 font-size: 0.85rem;
                 min-height: 3em;  /* More space for text on mobile */
+            }
+
+            .stress-measure label {
+                font-size: 0.8rem;
             }
 
             .stress-level select,

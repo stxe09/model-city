@@ -92,6 +92,7 @@ def submit_score():
 
     else: 
         image_data = "none"
+        image_url = "none"
     
     # Save score to database
     new_score = Score(winner=winner, image_url=image_url)
@@ -103,7 +104,6 @@ def submit_score():
 # TODO: Jiawei to change model after Samuel confirms questions. Please test it and make sure we can access responses at host.com/api/feedback
 class Feedback(dbbb.Model):
     id = dbbb.Column(dbbb.Integer, primary_key=True)
-    # time_of_response = dbbb.Column(dbbb.DateTime) # Want to add this so that 
     date = dbbb.Column(dbbb.DateTime, default=datetime.utcnow)
     group = dbbb.Column(dbbb.String(20), nullable=False)
     gender = dbbb.Column(dbbb.String(20), nullable=False)

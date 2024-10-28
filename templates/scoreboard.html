@@ -462,6 +462,8 @@
             <input type="password" id="adminKey" placeholder="Admin Key" style="margin-right: 10px;">
             <button id="resetScores" class="danger-button">Reset All Scores</button>
         </div>
+
+        <h1> Thank you for supporting Territory Tri-umph! </h1>
     </div>
 
     <!-- Survey Section -->
@@ -482,23 +484,15 @@
                         </select>
                     </div>
                     <div class="stress-level">
-                        <label for="gender">Gender</label>
-                        <select id="gender" name="gender" >
-                            <option value="">Select</option>
-                            <option value="F">Female</option>
-                            <option value="M">Male</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="stress-level">
                         <label for="category">Category</label>
                         <select id="category" name="category">
                             <option value="">Select</option>
                             <option value="office_worker">Office Worker</option>
                             <option value="tourist">Tourist</option>
                             <option value="student">Student</option>
-                            <option value="URA_stuff">URA stuff</option>
+                            <option value="URA_stuff">URA staff</option>
                             <option value="passerby">Passerby</option>
+                            <option value="passerby">Others</option>
                         </select>
                     </div>
                 </div>
@@ -514,7 +508,7 @@
                         </select>
                     </div>
                     <div class="stress-level">
-                        <label for="again">Would you come back again?</label>
+                        <label for="again">Would you play again?</label>
                         <select id="again" name="again" >
                             <option value="">Select</option>
                             <option value="Y">Yes</option>
@@ -527,11 +521,11 @@
                 <label for="feedback">Rate Stress Levels from 1 to 10 (1 being not stressed and 10 being very stressed): </label>
                 <div class="stress-level-container">
                     <div class="stress-measure">
-                        <label for="stress_before">Stress Levels Before 😟<span style="color: red;">*</span></label>
+                        <label for="stress_before">Stress Levels Before Game 😟<span style="color: red;">*</span></label>
                         <input type="number" id="stress_before" name="stress_before" min="1" max="10" required>
                     </div>
                     <div class="stress-measure">
-                        <label for="stress_after">Stress Levels After 🥳<span style="color: red;">*</span></label>
+                        <label for="stress_after">Stress Levels After Game🥳<span style="color: red;">*</span></label>
                         <input type="number" id="stress_after" name="stress_after" min="1" max="10" required>
                     </div>
                 </div>
@@ -539,7 +533,7 @@
                 <label for="feedback">Which aspect of this activity did you enjoy the most? (Rank 1 - 5 with 1  being the activity you most enjoyed and 5 being the activity you least enjoyed).</label>
                 <div class="stress-level-container">
                     <div class="stress-level">
-                        <label for="play">Playing Connect 3</label>
+                        <label for="play">Strategy</label>
                         <select id="play" name="play" >
                             <option value="">Select</option>
                             <option value="1">1</option>
@@ -565,7 +559,7 @@
                 </div>
                 <div class="stress-level-container">
                     <div class="stress-level">
-                        <label for="region">Regional theme</label>
+                        <label for="region">Regional pride</label>
                         <select id="region" name="region" >
                             <option value="">Select</option>
                             <option value="1">1</option>
@@ -578,7 +572,7 @@
                 </div>
                 <div class="stress-level-container">
                     <div class="stress-level">
-                        <label for="sticker">Sticker element</label>
+                        <label for="sticker">Inputting information (Stickers) </label>
                         <select id="sticker" name="sticker" >
                             <option value="">Select</option>
                             <option value="1">1</option>
@@ -615,6 +609,8 @@
         <div class="spinner"></div>
         <div class="loading-text">Submitting score...</div>
     </div>
+    
+
 
     <script>
         // Tab Functionality

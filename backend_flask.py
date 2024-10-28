@@ -215,6 +215,6 @@ def get_score_count():
     
 
 if __name__ == '__main__':
-    with app.app_context():
-        dbbb.create_all()  # Create database tables
+    #with app.app_context():
+    #dbbb.create_all()  # Create database tables
     app.run(debug=True, threaded = True)
